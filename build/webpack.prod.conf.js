@@ -1,16 +1,16 @@
-'use strict';
-const path = require('path');
-const utils = require('./utils');
-const webpack = require('webpack');
-const config = require('../config');
-const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.base.conf');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+'use strict'
+const path = require('path')
+const utils = require('./utils')
+const webpack = require('webpack')
+const config = require('../config')
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base.conf')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-const env = require('../config/prod.env');
+const env = require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -45,12 +45,14 @@ const webpackConfig = merge(baseWebpackConfig, {
       // set the following option to `true` if you want to extract CSS from
       // codesplit chunks into this main css file as well.
       // This will result in *all* of your app's CSS being loaded upfront.
-      allChunks: false
+      allChunks: false,
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
-      cssProcessorOptions: config.build.productionSourceMap ? { safe: true, map: { inline: false } } : { safe: true }
+      cssProcessorOptions: config.build.productionSourceMap
+      ? { safe: true, map: { inline: false } }
+      : { safe: true }
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -76,9 +78,15 @@ const webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function(module) {
+      minChunks: function (module) {
         // any required modules inside node_modules are extracted to vendor
-        return module.resource && /\.(js|vue|styl|ttf|woff)$/.test(module.resource) && module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0;
+        return (
+          module.resource &&
+          /\.(js|vue|styl|ttf|woff)$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, '../node_modules')
+          ) === 0
+        )
       }
     }),
     // extract webpack runtime and module manifest to its own file in order to
@@ -106,25 +114,29 @@ const webpackConfig = merge(baseWebpackConfig, {
       }
     ])
   ]
-});
+})
 
 if (config.build.productionGzip) {
-  const CompressionWebpackPlugin = require('compression-webpack-plugin');
+  const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
-      test: new RegExp('\\.(' + config.build.productionGzipExtensions.join('|') + ')$'),
+      test: new RegExp(
+        '\\.(' +
+        config.build.productionGzipExtensions.join('|') +
+        ')$'
+      ),
       threshold: 10240,
       minRatio: 0.8
     })
-  );
+  )
 }
 
 if (config.build.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
-module.exports = webpackConfig;
+module.exports = webpackConfig
